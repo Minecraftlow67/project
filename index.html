@@ -179,16 +179,16 @@
     </div>
 
     <script>
-        // Array mapping out actual working open-source browser games hosted on GitHub pages
+        // Updated data array with distinct functional game URLs
         const realGames = [
-            { id: 1, title: "Subway Surfers", img: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400", url: "https://wayou.github.io/t-rex-runner/", size: "large" },
+            { id: 1, title: "Subway Surfers", img: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400", url: "https://eeshadutta.github.io/Subway-Surfers/", size: "large" },
             { id: 2, title: "Hextris (Geometry Tetris)", img: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=400", url: "https://hextris.github.io/hextris/", size: "large" },
             { id: 3, title: "Classic 2048", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400", url: "https://thedoggybrad.github.io/2048ontheweb/", size: "normal" },
             { id: 4, title: "Astray (3D Ball Roll)", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400", url: "https://wwwtyro.github.io/Astray/", size: "large" },
             { id: 5, title: "Blockrain Tetris", img: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=400", url: "https://aerolab.github.io/blockrain.js/", size: "normal" },
             { id: 6, title: "Flappy Bird Clone", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400", url: "https://nebez.github.io/floppybird/", size: "normal" },
             { id: 7, title: "Pacman Retro", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400", url: "https://mumuy.github.io/pacman/", size: "normal" },
-            { id: 8, title: "Breakout Arcade", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400", url: "https://play.enclavegames.com/breakout/", size: "normal" }
+            { id: 8, title: "Chromium Dino Run", img: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?w=400", url: "https://wayou.github.io/t-rex-runner/", size: "normal" }
         ];
 
         const grid = document.getElementById('gameGrid');
@@ -196,7 +196,6 @@
         const iframe = document.getElementById('gameFrame');
         const searchInput = document.getElementById('searchInput');
 
-        // Dynamic rendering function
         function displayGames(gamesArray) {
             grid.innerHTML = "";
             gamesArray.forEach(game => {
@@ -212,7 +211,6 @@
             });
         }
 
-        // Live Search Handler
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
             const filtered = realGames.filter(g => g.title.toLowerCase().includes(query));
@@ -226,10 +224,9 @@
 
         function closeGame() {
             modal.style.display = "none";
-            iframe.src = ""; // Hard stops audio loops instantly
+            iframe.src = ""; 
         }
 
-        // Initialize setup
         displayGames(realGames);
     </script>
 </body>
