@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZenSpace | Crystal Clear Relaxation</title>
+    <title>ZenSpace | Custom Voice & Colors</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            user-select: none; /* Prevents text selection highlight while dragging */
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
@@ -25,7 +26,7 @@
 
         header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
         header h1 {
@@ -33,19 +34,14 @@
             color: #a7f3d0;
             font-weight: 300;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
-        header p {
-            color: #94a3b8;
-            font-size: 1.1rem;
-        }
-
-        /* Tabs Navigation */
+        /* Navigation */
         .nav-tabs {
             display: flex;
             gap: 15px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background: rgba(255, 255, 255, 0.05);
             padding: 8px;
             border-radius: 30px;
@@ -82,7 +78,7 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            padding: 40px 30px;
+            padding: 35px 25px;
             backdrop-filter: blur(10px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             text-align: center;
@@ -90,105 +86,103 @@
 
         .game-panel.active {
             display: block;
-            animation: fadeIn 0.5s ease-out;
+            animation: panelFadeIn 0.5s ease-out;
         }
 
-        @keyframes fadeIn {
+        @keyframes panelFadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h2 {
-            font-weight: 400;
-            margin-bottom: 10px;
-            color: #f1f5f9;
+        /* Customization Controls Panel */
+        .controls-bar {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 0.9rem;
         }
 
-        .subtitle {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            margin-bottom: 25px;
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* GAME 1: Advanced Drag-to-Pop Bubble Grid */
+        input[type="range"] {
+            accent-color: #34d399;
+            cursor: pointer;
+        }
+
+        input[type="color"] {
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+
+        /* Voice Rec Button States */
+        .rec-btn {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .rec-btn.recording {
+            animation: pulseRed 1s infinite alternate;
+            background-color: #b91c1c;
+        }
+        @keyframes pulseRed {
+            from { opacity: 0.6; } to { opacity: 1; }
+        }
+
+        /* Bubble Wrap Core Setup */
         .bubble-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-            touch-action: none; /* Critical for smooth dragging on mobile phones */
+            gap: 12px;
+            margin-bottom: 20px;
+            touch-action: none;
         }
 
         .bubble {
             aspect-ratio: 1;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.05)), #3b82f6;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(0,0,0,0.2)), var(--bubble-color, #3b82f6);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: inset -4px -4px 10px rgba(0,0,0,0.5), 3px 3px 8px rgba(0,0,0,0.3);
-            transition: transform 0.1s ease, background 0.2s;
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.4), 2px 2px 6px rgba(0,0,0,0.3);
+            transition: transform 0.05s ease;
         }
 
         .bubble.popped {
             background: #1e293b !important;
             box-shadow: inset 3px 3px 6px rgba(0,0,0,0.6);
-            transform: scale(0.95);
+            transform: scale(0.93);
             cursor: default;
         }
 
-        .control-btn {
-            background-color: rgba(255,255,255,0.1);
+        .action-btn {
+            background-color: #3a3f47;
             color: white;
             border: 1px solid rgba(255,255,255,0.2);
             padding: 10px 20px;
             border-radius: 12px;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: background 0.2s;
         }
 
-        .control-btn:hover {
-            background-color: rgba(255,255,255,0.2);
-        }
-
-        /* GAME 2: Breathing Circle */
-        .breath-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 250px;
-        }
-
-        .breath-circle {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #60a5fa, #3b82f6);
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 1.1rem;
-            animation: breathe 19s infinite ease-in-out;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); background: #3b82f6; }
-            21% { transform: scale(2.4); background: #34d399; box-shadow: 0 0 50px rgba(52, 211, 153, 0.7); }
-            58% { transform: scale(2.4); background: #fbbf24; box-shadow: 0 0 50px rgba(251, 191, 36, 0.7); }
-            100% { transform: scale(1); background: #3b82f6; }
-        }
-
-        .breath-instruction {
-            margin-top: 35px;
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            height: 30px;
-        }
-
-        /* GAME 3: Worry Shredder */
+        /* Worry Shredder Animated States */
         .worry-box {
             width: 100%;
             height: 120px;
@@ -201,10 +195,19 @@
             resize: none;
             outline: none;
             margin-bottom: 20px;
+            transform-origin: center;
         }
 
-        .worry-box:focus {
-            border-color: #f43f5e;
+        /* Worry Cloud Animation Sequences */
+        .shredding {
+            animation: shakeShred 0.8s ease-in-out forwards;
+        }
+
+        @keyframes shakeShred {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-8px, 2px) rotate(-1deg); }
+            20%, 40%, 60%, 80% { transform: translate(8px, -2px) rotate(1deg); }
+            100% { transform: scale(0) translateY(-100px); opacity: 0; filter: blur(15px); }
         }
 
         .shred-btn {
@@ -224,47 +227,58 @@
 
     <header>
         <h1>ZenSpace</h1>
-        <p>Your interactive anti-stress portal.</p>
+        <p>Customizable Sensory Anti-Stress Studio</p>
     </header>
 
     <nav class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('wrap')">Bubble Wrap</button>
-        <button class="tab-btn" onclick="switchTab('breathe')">Breathing Space</button>
         <button class="tab-btn" onclick="switchTab('shredder')">Worry Cloud</button>
     </nav>
 
     <div class="container">
-        <!-- Panel 1: Advanced Bubble Wrap -->
         <div id="wrapPanel" class="game-panel active">
-            <h2>Pop Away Your Stress</h2>
-            <div class="subtitle">Click OR drag your mouse/finger across the sheet to mass-pop!</div>
-            <div class="bubble-grid" id="bubbleGrid"></div>
-            <button class="control-btn" onclick="resetBubbleWrap()">Fresh Sheet</button>
-        </div>
-
-        <!-- Panel 2: Breathing -->
-        <div id="breathePanel" class="game-panel">
-            <h2>4-7-8 Breathing Technique</h2>
-            <div class="breath-container">
-                <div class="breath-circle" id="breathCircle">Ready</div>
+            
+            <div class="controls-bar">
+                <div class="control-item">
+                    <label>Size:</label>
+                    <input type="range" id="sizeSlider" min="12" max="72" step="6" value="30" oninput="updateGridSize(this.value)">
+                    <span id="sizeVal">30</span>
+                </div>
+                <div class="control-item">
+                    <label>Color:</label>
+                    <input type="color" id="colorPicker" value="#3b82f6" oninput="updateColor(this.value)">
+                </div>
+                <div class="control-item">
+                    <button class="rec-btn" id="recBtn" onclick="toggleVoiceRecording()">🎙️ Record Voice Pop</button>
+                </div>
             </div>
-            <div class="breath-instruction" id="breathText">Follow the circle guidelines...</div>
+
+            <div class="bubble-grid" id="bubbleGrid"></div>
+            <button class="action-btn" onclick="resetBubbleWrap()">Reset Sheet</button>
         </div>
 
-        <!-- Panel 3: Worry Shredder -->
         <div id="shredderPanel" class="game-panel">
-            <h2>Release Your Thoughts</h2>
-            <div class="subtitle">Type whatever is making you anxious below, then cast it into the void.</div>
-            <textarea class="worry-box" id="worryInput" placeholder="Write your worries here..."></textarea>
+            <h2>Worry Dissolve Cloud</h2>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Type out what is stressing you. Watch it shake apart and disappear forever.</p>
+            <textarea class="worry-box" id="worryInput" placeholder="Type your stress here..."></textarea>
             <div>
-                <button class="shred-btn" onclick="shredWorry()">Release into the Cloud</button>
+                <button class="shred-btn" onclick="animateAndShred()">Release to Cloud</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Track whether user is actively holding down mouse or touch
         let isDrawing = false;
+        let currentSize = 30;
+        let currentColor = "#3b82f6";
+        
+        // Voice Capture Variables
+        let mediaRecorder;
+        let audioChunks = [];
+        let voiceAudioBuffer = null;
+        let useVoicePop = false;
+        let audioCtxInstance = null;
+
         window.addEventListener('pointerdown', () => isDrawing = true);
         window.addEventListener('pointerup', () => isDrawing = false);
 
@@ -272,147 +286,129 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.game-panel').forEach(panel => panel.classList.remove('active'));
             event.target.classList.add('active');
-            
             if(tabName === 'wrap') document.getElementById('wrapPanel').classList.add('active');
-            if(tabName === 'breathe') {
-                document.getElementById('breathePanel').classList.add('active');
-                startBreathingPrompts();
-            } else {
-                clearInterval(breathInterval);
-            }
             if(tabName === 'shredder') document.getElementById('shredderPanel').classList.add('active');
         }
 
-        // --- CRYSTAL CLEAR ADVANCED AUDIO ENGINE ---
-        function playCrystalPop() {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // Oscillator 1: High frequency snap (The sharp "plastic" snap)
-            const oscElement = ctx.createOscillator();
-            const gainElement = ctx.createGain();
-            oscElement.type = 'triangle';
-            oscElement.frequency.setValueAtTime(950, ctx.currentTime);
-            oscElement.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 0.008);
-            
-            gainElement.gain.setValueAtTime(0.35, ctx.currentTime);
-            gainElement.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.012); // Extemely short snap
-            
-            oscElement.connect(gainElement);
-            gainElement.connect(ctx.destination);
-            
-            // Oscillator 2: Lower hollow pop (The air pressure sound behind it)
+        function updateColor(val) {
+            currentColor = val;
+            document.getElementById('bubbleGrid').style.setProperty('--bubble-color', val);
+        }
+
+        function updateGridSize(val) {
+            currentSize = val;
+            document.getElementById('sizeVal').innerText = val;
+            buildWrap();
+        }
+
+        // --- CORE CRYSTAL POP AUDIO ENGINE ---
+        function playPopSound() {
+            if (!audioCtxInstance) audioCtxInstance = new (window.AudioContext || window.webkitAudioContext)();
+            const ctx = audioCtxInstance;
+
+            // IF Custom Voice is Recorded and Loaded, play it!
+            if (useVoicePop && voiceAudioBuffer) {
+                const playSource = ctx.createBufferSource();
+                playSource.buffer = voiceAudioBuffer;
+                playSource.connect(ctx.destination);
+                playSource.start(0);
+                return;
+            }
+
+            // Fallback Crystal Pop Synthesizer
+            const oscEle = ctx.createOscillator();
+            const gainEle = ctx.createGain();
+            oscEle.type = 'triangle';
+            oscEle.frequency.setValueAtTime(950, ctx.currentTime);
+            oscEle.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 0.008);
+            gainEle.gain.setValueAtTime(0.35, ctx.currentTime);
+            gainEle.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.012);
+            oscEle.connect(gainEle);
+            gainEle.connect(ctx.destination);
+
             const oscAir = ctx.createOscillator();
             const gainAir = ctx.createGain();
             oscAir.type = 'sine';
             oscAir.frequency.setValueAtTime(180, ctx.currentTime);
             oscAir.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.02);
-            
             gainAir.gain.setValueAtTime(0.5, ctx.currentTime);
             gainAir.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025);
-            
             oscAir.connect(gainAir);
             gainAir.connect(ctx.destination);
-            
-            // Fire both layers synchronously
-            oscElement.start();
-            oscAir.start();
-            oscElement.stop(ctx.currentTime + 0.03);
-            oscAir.stop(ctx.currentTime + 0.03);
+
+            oscEle.start(); oscAir.start();
+            oscEle.stop(ctx.currentTime + 0.03); oscAir.stop(ctx.currentTime + 0.03);
         }
 
-        function playZenSound() {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const notes = [261.63, 329.63, 392.00, 523.25];
-            notes.forEach((freq, index) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(freq, ctx.currentTime + (index * 0.05));
-                gain.gain.setValueAtTime(0.15, ctx.currentTime + (index * 0.05));
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(ctx.currentTime + (index * 0.05));
-                osc.stop(ctx.currentTime + 1.6);
-            });
+        // --- VOICE CAPTURE HANDLER ---
+        function toggleVoiceRecording() {
+            const btn = document.getElementById('recBtn');
+            if (!audioCtxInstance) audioCtxInstance = new (window.AudioContext || window.webkitAudioContext)();
+
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                btn.classList.remove('recording');
+                btn.innerText = "🎙️ Voice Pop Active!";
+                useVoicePop = true;
+            } else {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        audioChunks = [];
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                            audioBlob.arrayBuffer().then(buffer => {
+                                audioCtxInstance.decodeAudioData(buffer, (decoded) => {
+                                    voiceAudioBuffer = decoded;
+                                });
+                            });
+                        };
+                        mediaRecorder.start();
+                        btn.classList.add('recording');
+                        btn.innerText = "🛑 Stop (Record 1s)";
+                    }).catch(err => alert("Microphone access denied or unsupported."));
+            }
         }
 
-        // --- GAME INTERACTION BUILDER ---
+        // --- BUBBLE GENERATOR ENGINE ---
         const grid = document.getElementById('bubbleGrid');
 
         function buildWrap() {
             grid.innerHTML = '';
-            for (let i = 0; i < 30; i++) { // Boosted sheet size to 30 elements
+            grid.style.setProperty('--bubble-color', currentColor);
+            
+            for (let i = 0; i < currentSize; i++) {
                 const bubble = document.createElement('div');
                 bubble.className = 'bubble';
                 
-                // Helper action execution
-                const processPop = (target) => {
+                const triggerPop = (target) => {
                     if(!target.classList.contains('popped')) {
                         target.classList.add('popped');
-                        playCrystalPop();
+                        playPopSound();
                     }
                 };
 
-                // Triggers when dragging/sliding across elements
-                bubble.addEventListener('pointerover', function(e) {
-                    if (isDrawing) processPop(this);
-                });
-
-                // Triggers on initial direct touch/click down
-                bubble.addEventListener('pointerdown', function(e) {
-                    processPop(this);
-                });
-
+                bubble.addEventListener('pointerover', function() { if (isDrawing) triggerPop(this); });
+                bubble.addEventListener('pointerdown', function() { triggerPop(this); });
                 grid.appendChild(bubble);
             }
         }
 
-        function resetBubbleWrap() {
-            buildWrap();
-        }
+        function resetBubbleWrap() { buildWrap(); }
 
-        // Game 2: Breathing
-        let breathInterval;
-        const breathText = document.getElementById('breathText');
-        const breathCircle = document.getElementById('breathCircle');
+        // --- WORRY SHREDDER SYSTEM WITH ANIMATION ---
+        function animateAndShred() {
+            const box = document.getElementById('worryInput');
+            if(!box.value.trim()) return;
 
-        function startBreathingPrompts() {
-            clearInterval(breathInterval);
-            const cycle = () => {
-                breathText.innerText = "Inhale through your nose...";
-                breathCircle.innerText = "Inhale";
-                setTimeout(() => {
-                    breathText.innerText = "Hold your breath calmly...";
-                    breathCircle.innerText = "Hold";
-                }, 4000);
-                setTimeout(() => {
-                    breathText.innerText = "Exhale slowly completely...";
-                    breathCircle.innerText = "Exhale";
-                }, 11000);
-            };
-            cycle();
-            breathInterval = setInterval(cycle, 19000);
-        }
-
-        // Game 3: Worry Shredder
-        function shredWorry() {
-            const input = document.getElementById('worryInput');
-            if(!input.value.trim()) return;
-
-            input.style.transition = "all 1.5s ease-out";
-            input.style.transform = "scale(0.1) rotate(10deg)";
-            input.style.opacity = "0";
-            input.style.filter = "blur(10px)";
-            playZenSound();
+            // Apply shaking visual css rule class
+            box.classList.add('shredding');
 
             setTimeout(() => {
-                input.value = '';
-                input.style.transition = "none";
-                input.style.transform = "scale(1) rotate(0deg)";
-                input.style.filter = "none";
-                input.style.opacity = "1";
-            }, 1500);
+                box.value = '';
+                box.classList.remove('shredding');
+            }, 850);
         }
 
         buildWrap();
