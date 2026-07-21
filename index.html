@@ -3,201 +3,321 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VisionAI - Landing Page</title>
+  <title>Ultimate Clicker Game</title>
   <style>
     :root {
-      --bg-dark: #0d0f12;
-      --bg-card: #161920;
-      --accent: #00e5ff;
-      --accent-hover: #00b3cc;
-      --text-main: #f0f4f8;
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border: #232733;
+      --gold: #f59e0b;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
     }
 
     body {
-      background-color: var(--bg-dark);
+      background-color: var(--bg-color);
       color: var(--text-main);
-      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    header {
-      position: relative;
-      z-index: 100;
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .score-display {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .score-display h1 {
+      font-size: 2.5rem;
+      color: var(--accent);
+    }
+
+    .record-box {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .click-btn {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: none;
+      background: radial-gradient(circle, var(--accent) 0%, var(--accent-hover) 100%);
+      color: #000;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+      transition: transform 0.05s, box-shadow 0.1s;
+    }
+
+    .click-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2);
+    }
+
+    .shop-title {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      width: 100%;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 8px;
+    }
+
+    .powerup-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .powerup-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 8%;
-      border-bottom: 1px solid var(--border);
-      background-color: var(--bg-dark);
+      background-color: #0f172a;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #334155;
     }
 
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      margin-left: 24px;
-      transition: color 0.2s;
-      cursor: pointer;
-    }
-
-    nav a:hover {
+    .powerup-info h4 {
       color: var(--text-main);
+      font-size: 1rem;
     }
 
-    .hero {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 100px 20px 60px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      background: linear-gradient(90deg, #ffffff, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      font-size: 1.25rem;
+    .powerup-info p {
       color: var(--text-muted);
-      margin-bottom: 32px;
+      font-size: 0.8rem;
     }
 
-    .btn-primary {
-      display: inline-block;
+    .buy-btn {
       background-color: var(--accent);
       color: #000;
-      padding: 14px 32px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
       border: none;
-      transition: background 0.2s, transform 0.1s;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
     }
 
-    .btn-primary:hover {
+    .buy-btn:hover:not(:disabled) {
       background-color: var(--accent-hover);
-      transform: translateY(-2px);
+      color: #fff;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-      padding: 60px 8%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-      transition: border-color 0.2s;
-    }
-
-    .card:hover {
-      border-color: var(--accent);
-    }
-
-    .card h3 {
-      margin-bottom: 12px;
-      color: var(--accent);
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .section-download {
-      text-align: center;
-      padding: 80px 20px;
-      background-color: var(--bg-card);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-muted);
-      font-size: 0.85rem;
+    .buy-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">VISION AI</div>
-    <nav>
-      <!-- External links to popular sites -->
-      <a href="https://github.com" target="_blank">GitHub</a>
-      <a href="https://discord.com" target="_blank">Discord</a>
-    </nav>
-  </header>
+  <div class="container">
+    <!-- Click Section -->
+    <div class="panel">
+      <div class="score-display">
+        <p style="color: var(--text-muted);">Clicks</p>
+        <h1 id="click-count">0</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted);" id="cps-display">0 clicks/sec</p>
+        <div class="record-box">🏆 World Record: <span id="record-count">0</span></div>
+      </div>
 
-  <section class="hero">
-    <h1>Computer Vision Landing Page</h1>
-    <p>A modern responsive single-page design.</p>
-    
-    <!-- External website link on the main button -->
-    <a href="https://google.com" target="_blank" class="btn-primary">Go to External Site</a>
-  </section>
-
-    <div class="logo">VISION AI</div>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#download">Download</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h1>Computer Vision Landing Page</h1>
-    <p>A modern responsive single-page design.</p>
-    <a href="#download" class="btn-primary">Download Now</a>
-  </section>
-
-  <section class="features" id="features">
-    <div class="card">
-      <h3>Inference Engine</h3>
-      <p>Processes target elements efficiently in real-time using modern layout standards.</p>
+      <button class="click-btn" id="main-click-btn">CLICK!</button>
     </div>
-    <div class="card">
-      <h3>Fully Responsive</h3>
-      <p>Adapts seamlessly across desktop, tablet, and mobile displays.</p>
+
+    <!-- Power-Up Shop -->
+    <div class="panel">
+      <h2 class="shop-title">Power-Up Shop</h2>
+      <div class="powerup-list">
+        
+        <!-- Power-up 1 -->
+        <div class="powerup-item">
+          <div class="powerup-info">
+            <h4>Stronger Clicks</h4>
+            <p>+1 Click per Tap</p>
+            <p style="color: var(--accent);" id="cost-clicker">Cost: 10</p>
+          </div>
+          <button class="buy-btn" id="buy-clicker">Buy (0)</button>
+        </div>
+
+        <!-- Power-up 2 -->
+        <div class="powerup-item">
+          <div class="powerup-info">
+            <h4>Auto-Clicker</h4>
+            <p>+1 Click per Second</p>
+            <p style="color: var(--accent);" id="cost-auto">Cost: 50</p>
+          </div>
+          <button class="buy-btn" id="buy-auto">Buy (0)</button>
+        </div>
+
+        <!-- Power-up 3 -->
+        <div class="powerup-item">
+          <div class="powerup-info">
+            <h4>Mega Boost</h4>
+            <p>+10 Clicks per Tap</p>
+            <p style="color: var(--accent);" id="cost-mega">Cost: 500</p>
+          </div>
+          <button class="buy-btn" id="buy-mega">Buy (0)</button>
+        </div>
+
+      </div>
     </div>
-  </section>
+  </div>
 
-  <section class="section-download" id="download">
-    <h2>Get Started</h2>
-    <p style="margin: 15px 0; color: var(--text-muted);">Click below to test button interaction.</p>
-    <button class="btn-primary" onclick="alert('Button clicked successfully!')">Click Me</button>
-  </section>
+  <script>
+    // Game State
+    let clicks = 0;
+    let clickValue = 1;
+    let autoClickers = 0;
+    let megaBoosts = 0;
+    let worldRecord = parseInt(localStorage.getItem('clicker_world_record')) || 0;
 
-  <footer>
-    <p>&copy; 2026 VisionAI Project.</p>
-  </footer>
+    // Upgrade Costs & Levels
+    let clickerLevel = 0;
+    let clickerCost = 10;
 
+    let autoLevel = 0;
+    let autoCost = 50;
+
+    let megaLevel = 0;
+    let megaCost = 500;
+
+    // DOM Elements
+    const clickDisplay = document.getElementById('click-count');
+    const cpsDisplay = document.getElementById('cps-display');
+    const recordDisplay = document.getElementById('record-count');
+    const mainBtn = document.getElementById('main-click-btn');
+
+    const buyClickerBtn = document.getElementById('buy-clicker');
+    const costClickerText = document.getElementById('cost-clicker');
+
+    const buyAutoBtn = document.getElementById('buy-auto');
+    const costAutoText = document.getElementById('cost-auto');
+
+    const buyMegaBtn = document.getElementById('buy-mega');
+    const costMegaText = document.getElementById('cost-mega');
+
+    // Update UI Elements
+    function updateUI() {
+      clickDisplay.textContent = Math.floor(clicks);
+      recordDisplay.textContent = worldRecord;
+      cpsDisplay.textContent = `${autoClickers} clicks/sec`;
+
+      // Update Upgrade 1
+      costClickerText.textContent = `Cost: ${clickerCost}`;
+      buyClickerBtn.textContent = `Buy (${clickerLevel})`;
+      buyClickerBtn.disabled = clicks < clickerCost;
+
+      // Update Upgrade 2
+      costAutoText.textContent = `Cost: ${autoCost}`;
+      buyAutoBtn.textContent = `Buy (${autoLevel})`;
+      buyAutoBtn.disabled = clicks < autoCost;
+
+      // Update Upgrade 3
+      costMegaText.textContent = `Cost: ${megaCost}`;
+      buyMegaBtn.textContent = `Buy (${megaLevel})`;
+      buyMegaBtn.disabled = clicks < megaCost;
+    }
+
+    // Check & Update Record
+    function checkRecord() {
+      if (clicks > worldRecord) {
+        worldRecord = Math.floor(clicks);
+        localStorage.setItem('clicker_world_record', worldRecord);
+      }
+    }
+
+    // Main Click Event
+    mainBtn.addEventListener('click', () => {
+      clicks += clickValue;
+      checkRecord();
+      updateUI();
+    });
+
+    // Buy Stronger Clicks
+    buyClickerBtn.addEventListener('click', () => {
+      if (clicks >= clickerCost) {
+        clicks -= clickerCost;
+        clickValue += 1;
+        clickerLevel++;
+        clickerCost = Math.floor(clickerCost * 1.5);
+        updateUI();
+      }
+    });
+
+    // Buy Auto Clicker
+    buyAutoBtn.addEventListener('click', () => {
+      if (clicks >= autoCost) {
+        clicks -= autoCost;
+        autoClickers += 1;
+        autoLevel++;
+        autoCost = Math.floor(autoCost * 1.6);
+        updateUI();
+      }
+    });
+
+    // Buy Mega Boost
+    buyMegaBtn.addEventListener('click', () => {
+      if (clicks >= megaCost) {
+        clicks -= megaCost;
+        clickValue += 10;
+        megaLevel++;
+        megaCost = Math.floor(megaCost * 1.8);
+        updateUI();
+      }
+    });
+
+    // Game Loop (Runs every second for Auto-Clicker)
+    setInterval(() => {
+      if (autoClickers > 0) {
+        clicks += autoClickers;
+        checkRecord();
+        updateUI();
+      }
+    }, 1000);
+
+    // Initial load
+    updateUI();
+  </script>
 </body>
 </html>
