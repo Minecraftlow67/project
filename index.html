@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VisionAI - Next-Gen AI Vision Assist for Minecraft</title>
+  <title>VisionAI - Landing Page</title>
   <style>
     :root {
       --bg-dark: #0d0f12;
@@ -29,11 +29,14 @@
     }
 
     header {
+      position: relative;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 20px 8%;
       border-bottom: 1px solid var(--border);
+      background-color: var(--bg-dark);
     }
 
     .logo {
@@ -48,6 +51,7 @@
       text-decoration: none;
       margin-left: 24px;
       transition: color 0.2s;
+      cursor: pointer;
     }
 
     nav a:hover {
@@ -55,6 +59,8 @@
     }
 
     .hero {
+      position: relative;
+      z-index: 1;
       text-align: center;
       padding: 100px 20px 60px;
       max-width: 900px;
@@ -83,6 +89,8 @@
       border-radius: 8px;
       font-weight: 600;
       text-decoration: none;
+      cursor: pointer;
+      border: none;
       transition: background 0.2s, transform 0.1s;
     }
 
@@ -122,10 +130,17 @@
       font-size: 0.95rem;
     }
 
+    .section-download {
+      text-align: center;
+      padding: 80px 20px;
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
     footer {
       text-align: center;
       padding: 40px;
-      border-top: 1px solid var(--border);
       color: var(--text-muted);
       font-size: 0.85rem;
     }
@@ -137,34 +152,35 @@
     <div class="logo">VISION AI</div>
     <nav>
       <a href="#features">Features</a>
-      <a href="#requirements">Requirements</a>
       <a href="#download">Download</a>
     </nav>
   </header>
 
   <section class="hero">
-    <h1>Computer Vision Powered Targeting</h1>
-    <p>A lightweight, machine-learning based vision system designed to analyze screen frames in real time without modifying game memory files.</p>
-    <a href="#download" class="btn-primary">Get Started Free</a>
+    <h1>Computer Vision Landing Page</h1>
+    <p>A modern responsive single-page design.</p>
+    <a href="#download" class="btn-primary">Download Now</a>
   </section>
 
   <section class="features" id="features">
     <div class="card">
-      <h3>ONNX Inference Engine</h3>
-      <p>Uses DirectML and GPU hardware acceleration to process frames with sub-10ms latency.</p>
+      <h3>Inference Engine</h3>
+      <p>Processes target elements efficiently in real-time using modern layout standards.</p>
     </div>
     <div class="card">
-      <h3>Memory-Free Vision</h3>
-      <p>Operates entirely outside game memory space by inspecting screen pixel data using custom YOLO models.</p>
-    </div>
-    <div class="card">
-      <h3>Custom Model Support</h3>
-      <p>Train or import custom object-detection weights (`.onnx`) tailored to custom texture packs or mobs.</p>
+      <h3>Fully Responsive</h3>
+      <p>Adapts seamlessly across desktop, tablet, and mobile displays.</p>
     </div>
   </section>
 
+  <section class="section-download" id="download">
+    <h2>Get Started</h2>
+    <p style="margin: 15px 0; color: var(--text-muted);">Click below to test button interaction.</p>
+    <button class="btn-primary" onclick="alert('Button clicked successfully!')">Click Me</button>
+  </section>
+
   <footer>
-    <p>&copy; 2026 VisionAI Project. For educational and research purposes.</p>
+    <p>&copy; 2026 VisionAI Project.</p>
   </footer>
 
 </body>
