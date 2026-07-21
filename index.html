@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultimate Clicker Game</title>
+  <title>Customizable Clicker Deluxe</title>
   <style>
     :root {
       --bg-color: #0f172a;
       --card-bg: #1e293b;
       --accent: #38bdf8;
-      --accent-hover: #0284c7;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --gold: #f59e0b;
+      
+      /* Customizable Button Properties */
+      --btn-color: #38bdf8;
+      --btn-shape: 50%; /* Circle by default */
     }
 
     * {
@@ -37,11 +40,11 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
-      max-width: 800px;
+      max-width: 950px;
       width: 100%;
     }
 
-    @media (max-width: 650px) {
+    @media (max-width: 768px) {
       .container {
         grid-template-columns: 1fr;
       }
@@ -63,36 +66,84 @@
     }
 
     .score-display h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       color: var(--accent);
     }
 
     .record-box {
       margin-top: 8px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--gold);
       font-weight: bold;
     }
 
+    /* Main Dynamic Click Button */
+    .click-btn-container {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
     .click-btn {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      border-radius: var(--btn-shape);
       border: none;
-      background: radial-gradient(circle, var(--accent) 0%, var(--accent-hover) 100%);
+      background-color: var(--btn-color);
       color: #000;
       font-size: 1.5rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
-      transition: transform 0.05s, box-shadow 0.1s;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.05s, background-color 0.2s, border-radius 0.2s;
     }
 
     .click-btn:active {
-      transform: scale(0.95);
-      box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2);
+      transform: scale(0.92);
     }
 
+    /* Customization Section */
+    .custom-box {
+      width: 100%;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: auto;
+    }
+
+    .custom-box h3 {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+    }
+
+    .custom-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .color-picker-group, .shape-picker-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    select, input[type="color"] {
+      background-color: #1e293b;
+      color: #fff;
+      border: 1px solid #334155;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Shop Section */
     .shop-title {
       font-size: 1.4rem;
       margin-bottom: 16px;
@@ -106,6 +157,9 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     .powerup-item {
@@ -120,7 +174,7 @@
 
     .powerup-info h4 {
       color: var(--text-main);
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     .powerup-info p {
@@ -132,20 +186,20 @@
       background-color: var(--accent);
       color: #000;
       border: none;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
+      min-width: 80px;
     }
 
     .buy-btn:hover:not(:disabled) {
-      background-color: var(--accent-hover);
-      color: #fff;
+      filter: brightness(1.1);
     }
 
     .buy-btn:disabled {
-      opacity: 0.4;
+      opacity: 0.3;
       cursor: not-allowed;
     }
   </style>
@@ -153,53 +207,45 @@
 <body>
 
   <div class="container">
-    <!-- Click Section -->
+    <!-- Left: Gameplay & Customization Panel -->
     <div class="panel">
       <div class="score-display">
-        <p style="color: var(--text-muted);">Clicks</p>
+        <p style="color: var(--text-muted);">Total Clicks</p>
         <h1 id="click-count">0</h1>
         <p style="font-size: 0.85rem; color: var(--text-muted);" id="cps-display">0 clicks/sec</p>
         <div class="record-box">🏆 World Record: <span id="record-count">0</span></div>
       </div>
 
-      <button class="click-btn" id="main-click-btn">CLICK!</button>
+      <div class="click-btn-container">
+        <button class="click-btn" id="main-click-btn">CLICK!</button>
+      </div>
+
+      <!-- Customization Box -->
+      <div class="custom-box">
+        <h3>🎨 Customize Button</h3>
+        <div class="custom-controls">
+          <div class="color-picker-group">
+            <label for="btn-color">Color:</label>
+            <input type="color" id="btn-color" value="#38bdf8">
+          </div>
+          <div class="shape-picker-group">
+            <label for="btn-shape">Shape:</label>
+            <select id="btn-shape">
+              <option value="50%">Circle</option>
+              <option value="20%">Rounded Square</option>
+              <option value="0%">Square</option>
+              <option value="50% 20%">Capsule / Oval</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Power-Up Shop -->
+    <!-- Right: Expanded Power-Up Shop -->
     <div class="panel">
       <h2 class="shop-title">Power-Up Shop</h2>
-      <div class="powerup-list">
-        
-        <!-- Power-up 1 -->
-        <div class="powerup-item">
-          <div class="powerup-info">
-            <h4>Stronger Clicks</h4>
-            <p>+1 Click per Tap</p>
-            <p style="color: var(--accent);" id="cost-clicker">Cost: 10</p>
-          </div>
-          <button class="buy-btn" id="buy-clicker">Buy (0)</button>
-        </div>
-
-        <!-- Power-up 2 -->
-        <div class="powerup-item">
-          <div class="powerup-info">
-            <h4>Auto-Clicker</h4>
-            <p>+1 Click per Second</p>
-            <p style="color: var(--accent);" id="cost-auto">Cost: 50</p>
-          </div>
-          <button class="buy-btn" id="buy-auto">Buy (0)</button>
-        </div>
-
-        <!-- Power-up 3 -->
-        <div class="powerup-item">
-          <div class="powerup-info">
-            <h4>Mega Boost</h4>
-            <p>+10 Clicks per Tap</p>
-            <p style="color: var(--accent);" id="cost-mega">Cost: 500</p>
-          </div>
-          <button class="buy-btn" id="buy-mega">Buy (0)</button>
-        </div>
-
+      <div class="powerup-list" id="shop-container">
+        <!-- Power-ups populated dynamically via JavaScript -->
       </div>
     </div>
   </div>
@@ -208,58 +254,109 @@
     // Game State
     let clicks = 0;
     let clickValue = 1;
-    let autoClickers = 0;
-    let megaBoosts = 0;
+    let autoCPS = 0;
     let worldRecord = parseInt(localStorage.getItem('clicker_world_record')) || 0;
 
-    // Upgrade Costs & Levels
-    let clickerLevel = 0;
-    let clickerCost = 10;
-
-    let autoLevel = 0;
-    let autoCost = 50;
-
-    let megaLevel = 0;
-    let megaCost = 500;
+    // Power-Up Configurations (Boosts & Costs scale exponentially)
+    const powerups = [
+      { id: 'tap_boost', name: 'Tap Multiplier', desc: 'Increases tap yield', type: 'tap', baseCost: 15, costMult: 1.5, baseBoost: 1, boostMult: 1.25, count: 0 },
+      { id: 'auto_clicker', name: 'Auto-Bot', desc: 'Adds clicks every second', type: 'auto', baseCost: 50, costMult: 1.6, baseBoost: 1, boostMult: 1.3, count: 0 },
+      { id: 'power_glove', name: 'Power Glove', desc: 'Massive boost to tap yield', type: 'tap', baseCost: 250, costMult: 1.7, baseBoost: 8, boostMult: 1.35, count: 0 },
+      { id: 'click_factory', name: 'Click Factory', desc: 'Generates heavy CPS', type: 'auto', baseCost: 1200, costMult: 1.8, baseBoost: 25, boostMult: 1.4, count: 0 },
+      { id: 'quantum_overclock', name: 'Quantum Overclock', desc: 'Godly boost to both taps & CPS', type: 'both', baseCost: 8000, costMult: 2.0, baseBoost: 100, boostMult: 1.5, count: 0 }
+    ];
 
     // DOM Elements
     const clickDisplay = document.getElementById('click-count');
     const cpsDisplay = document.getElementById('cps-display');
     const recordDisplay = document.getElementById('record-count');
     const mainBtn = document.getElementById('main-click-btn');
+    const shopContainer = document.getElementById('shop-container');
+    const colorPicker = document.getElementById('btn-color');
+    const shapePicker = document.getElementById('btn-shape');
 
-    const buyClickerBtn = document.getElementById('buy-clicker');
-    const costClickerText = document.getElementById('cost-clicker');
+    // Calculate current cost and boost for a powerup based on level
+    function getPowerupMetrics(p) {
+      const currentCost = Math.floor(p.baseCost * Math.pow(p.costMult, p.count));
+      const currentBoost = Math.floor(p.baseBoost * Math.pow(p.boostMult, p.count));
+      return { currentCost, currentBoost };
+    }
 
-    const buyAutoBtn = document.getElementById('buy-auto');
-    const costAutoText = document.getElementById('cost-auto');
+    // Recalculate Total Stats
+    function recalculateStats() {
+      let newClickVal = 1;
+      let newCPS = 0;
 
-    const buyMegaBtn = document.getElementById('buy-mega');
-    const costMegaText = document.getElementById('cost-mega');
+      powerups.forEach(p => {
+        if (p.count > 0) {
+          // Total output from all bought levels
+          for (let i = 0; i < p.count; i++) {
+            const boostAtLevel = Math.floor(p.baseBoost * Math.pow(p.boostMult, i));
+            if (p.type === 'tap' || p.type === 'both') newClickVal += boostAtLevel;
+            if (p.type === 'auto' || p.type === 'both') newCPS += boostAtLevel;
+          }
+        }
+      });
+
+      clickValue = newClickVal;
+      autoCPS = newCPS;
+    }
+
+    // Build Shop UI Elements
+    function initShop() {
+      shopContainer.innerHTML = '';
+      powerups.forEach((p, index) => {
+        const item = document.createElement('div');
+        item.className = 'powerup-item';
+        item.innerHTML = `
+          <div class="powerup-info">
+            <h4>${p.name}</h4>
+            <p>${p.desc}</p>
+            <p style="color: var(--accent);" id="cost-${p.id}">Cost: 0</p>
+            <p style="color: var(--gold); font-size: 0.75rem;" id="boost-${p.id}">Next Boost: +0</p>
+          </div>
+          <button class="buy-btn" id="buy-${p.id}" onclick="buyPowerup(${index})">Buy (0)</button>
+        `;
+        shopContainer.appendChild(item);
+      });
+    }
 
     // Update UI Elements
     function updateUI() {
       clickDisplay.textContent = Math.floor(clicks);
       recordDisplay.textContent = worldRecord;
-      cpsDisplay.textContent = `${autoClickers} clicks/sec`;
+      cpsDisplay.textContent = `${autoCPS} clicks/sec`;
 
-      // Update Upgrade 1
-      costClickerText.textContent = `Cost: ${clickerCost}`;
-      buyClickerBtn.textContent = `Buy (${clickerLevel})`;
-      buyClickerBtn.disabled = clicks < clickerCost;
+      powerups.forEach(p => {
+        const { currentCost, currentBoost } = getPowerupMetrics(p);
+        const costText = document.getElementById(`cost-${p.id}`);
+        const boostText = document.getElementById(`boost-${p.id}`);
+        const buyBtn = document.getElementById(`buy-${p.id}`);
 
-      // Update Upgrade 2
-      costAutoText.textContent = `Cost: ${autoCost}`;
-      buyAutoBtn.textContent = `Buy (${autoLevel})`;
-      buyAutoBtn.disabled = clicks < autoCost;
-
-      // Update Upgrade 3
-      costMegaText.textContent = `Cost: ${megaCost}`;
-      buyMegaBtn.textContent = `Buy (${megaLevel})`;
-      buyMegaBtn.disabled = clicks < megaCost;
+        if (costText) costText.textContent = `Cost: ${currentCost}`;
+        if (boostText) boostText.textContent = `Next Boost: +${currentBoost} ${p.type === 'auto' ? 'CPS' : 'Per Tap'}`;
+        if (buyBtn) {
+          buyBtn.textContent = `Lvl ${p.count}`;
+          buyBtn.disabled = clicks < currentCost;
+        }
+      });
     }
 
-    // Check & Update Record
+    // Buy Powerup
+    window.buyPowerup = function(index) {
+      const p = powerups[index];
+      const { currentCost } = getPowerupMetrics(p);
+
+      if (clicks >= currentCost) {
+        clicks -= currentCost;
+        p.count++;
+        recalculateStats();
+        checkRecord();
+        updateUI();
+      }
+    };
+
+    // Check & Save World Record
     function checkRecord() {
       if (clicks > worldRecord) {
         worldRecord = Math.floor(clicks);
@@ -267,56 +364,34 @@
       }
     }
 
-    // Main Click Event
+    // Click Event
     mainBtn.addEventListener('click', () => {
       clicks += clickValue;
       checkRecord();
       updateUI();
     });
 
-    // Buy Stronger Clicks
-    buyClickerBtn.addEventListener('click', () => {
-      if (clicks >= clickerCost) {
-        clicks -= clickerCost;
-        clickValue += 1;
-        clickerLevel++;
-        clickerCost = Math.floor(clickerCost * 1.5);
-        updateUI();
-      }
+    // Customization Event Listeners
+    colorPicker.addEventListener('input', (e) => {
+      document.documentElement.style.setProperty('--btn-color', e.target.value);
     });
 
-    // Buy Auto Clicker
-    buyAutoBtn.addEventListener('click', () => {
-      if (clicks >= autoCost) {
-        clicks -= autoCost;
-        autoClickers += 1;
-        autoLevel++;
-        autoCost = Math.floor(autoCost * 1.6);
-        updateUI();
-      }
+    shapePicker.addEventListener('change', (e) => {
+      document.documentElement.style.setProperty('--btn-shape', e.target.value);
     });
 
-    // Buy Mega Boost
-    buyMegaBtn.addEventListener('click', () => {
-      if (clicks >= megaCost) {
-        clicks -= megaCost;
-        clickValue += 10;
-        megaLevel++;
-        megaCost = Math.floor(megaCost * 1.8);
-        updateUI();
-      }
-    });
-
-    // Game Loop (Runs every second for Auto-Clicker)
+    // Auto-Clicker Loop (1-second tick)
     setInterval(() => {
-      if (autoClickers > 0) {
-        clicks += autoClickers;
+      if (autoCPS > 0) {
+        clicks += autoCPS;
         checkRecord();
         updateUI();
       }
     }, 1000);
 
-    // Initial load
+    // Initial Startup
+    initShop();
+    recalculateStats();
     updateUI();
   </script>
 </body>
